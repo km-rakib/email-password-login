@@ -3,7 +3,9 @@ import React from "react";
 const Register = () => {
   const handleRegister = (event) => {
     event.preventDefault();
-    console.log(event.target.email.value)
+    const email = event.target.email.value
+    const password = event.target.password.value
+    console.log(email, password)
   };
   return (
     <div className="w-96 mx-auto">
@@ -34,7 +36,7 @@ const Register = () => {
               clipRule="evenodd"
             />
           </svg>
-          <input type="password" className="grow" value="password" />
+          <input type="password" name="password" className="grow" placeholder="Password" />
         </label>
         <button className="btn btn-outline w-full btn-success">Signup</button>
       </form>
