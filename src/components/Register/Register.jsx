@@ -12,10 +12,18 @@ const Register = () => {
     event.preventDefault();
     const email = event.target.email.value;
     const password = event.target.password.value;
+    const terms = event.target.terms.checked;
+    console.log(email,password,terms)
 
     // reset error message
     setErrorMessage("");
     setSuccess(false);
+
+    if(!terms){
+      setErrorMessage("Please accept our terms and conditions")
+      return;
+    }
+
 
     if (password.length < 6) {
       setErrorMessage("Password must be at least 6 characters");
@@ -73,7 +81,7 @@ const Register = () => {
             required
           />
         </label>
-        <label className="input input-bordered flex items-center gap-2 my-4 relative">
+        <label className="input input-bordered flex items-center gap-2 mt-4  relative">
           <input
             type={showPassword ? "text" : "password"}
             name="password"
@@ -89,6 +97,12 @@ const Register = () => {
             {showPassword ? <LuEyeOff /> : <LuEye />}
           </button>
         </label>
+        <div className="form-control">
+          <label className="label justify-start gap-2 cursor-pointer">
+            <input type="checkbox" name="terms" className="checkbox-xs" />
+            <span className="label-text italic">Accept terms & conditions</span>
+          </label>
+        </div>
         <button type="submit" className="btn btn-outline w-full btn-success">
           Sign Up
         </button>
