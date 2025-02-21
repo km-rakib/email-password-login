@@ -5,6 +5,7 @@ import { useState } from "react";
 const Register = () => {
 
   const [errorMessage, setErrorMessage] = useState("")
+  const [success, setSuccess] = useState(false)
 
   const handleRegister = (event) => {
     event.preventDefault();
@@ -14,15 +15,29 @@ const Register = () => {
 
     // reset error message
     setErrorMessage("")
+    setSuccess(false)
+
+    // if(password.length < 6){
+    //   setErrorMessage('password atleast 6 characters');
+    //   return;
+    // }
+
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if(!passwordRegex.test(password)){
+      setErrorMessage("password must contain A-Z,1-9,a-z,special character");
+      return
+    }
 
     // user with email and password
     createUserWithEmailAndPassword(auth, email, password)
     .then(result => {
       console.log(result.user)
+      setSuccess(true)
     })
     .catch(error => {
       console.log("Error",error.message)
       setErrorMessage(error.message)
+      setSuccess(false)
     })
   };
   return (
@@ -60,7 +75,10 @@ const Register = () => {
       </form>
       <div>
         {
-          errorMessage && <p className="text-center text-red-500">Error:  {errorMessage} </p>
+          errorMessage && <p className="text-center text-red-500">{errorMessage} </p>
+        }
+        {
+          success && <p className="text text-green-500 text-center">Signed Up Successfully</p>
         }
       </div>
     </div>
