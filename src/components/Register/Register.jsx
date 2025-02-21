@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase.init";
 import { useState } from "react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -92,14 +93,14 @@ const Register = () => {
           <button
             type="button" // Changed to type="button"
             onClick={handleTogglePassword}
-            className="btn btn-xs absolute right-2"
+            className="btn btn-xs rounded-full h-8 border-none bg-white shadow-none w-8 absolute right-2"
           >
             {showPassword ? <LuEyeOff /> : <LuEye />}
           </button>
         </label>
         <div className="form-control">
           <label className="label justify-start gap-2 cursor-pointer">
-            <input type="checkbox" name="terms" className="checkbox-xs" />
+            <input type="checkbox" name="terms" className="checkbox checkbox-xs checkbox-success" />
             <span className="label-text italic">Accept terms & conditions</span>
           </label>
         </div>
@@ -116,6 +117,7 @@ const Register = () => {
             Account created successfully!
           </p>
         )}
+        <p className="text-sm">Already have an account? <Link to="/login"> <span className="text-emerald-600  italic font-semibold underline">Login </span> </Link> now. </p>
       </div>
     </div>
   );
