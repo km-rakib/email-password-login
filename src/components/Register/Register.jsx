@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { auth } from "../../firebase.init";
 import { useState } from "react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
@@ -53,6 +53,11 @@ const Register = () => {
         setSuccess(true);
         setErrorMessage("");
         event.target.reset();
+        //email verification
+        sendEmailVerification(auth.currentUser)
+        .then(()=>{
+          console.log("verification email send")
+        })
       })
       .catch((error) => {
         if (error.code === "auth/email-already-in-use") {
