@@ -1,5 +1,5 @@
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { auth } from "../../firebase.init";
 import { Link } from "react-router-dom";
 
