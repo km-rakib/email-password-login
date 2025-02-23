@@ -1,4 +1,8 @@
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  updateProfile,
+} from "firebase/auth";
 import { auth } from "../../firebase.init";
 import { useState } from "react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
@@ -13,18 +17,20 @@ const Register = () => {
     event.preventDefault();
     const email = event.target.email.value;
     const password = event.target.password.value;
+    const name = event.target.name.value;
+    const photo = event.target.photo.value;
     const terms = event.target.terms.checked;
-    console.log(email,password,terms)
+
+    console.log(email, password, terms, name, photo);
 
     // reset error message
     setErrorMessage("");
     setSuccess(false);
 
-    if(!terms){
-      setErrorMessage("Please accept our terms and conditions")
+    if (!terms) {
+      setErrorMessage("Please accept our terms and conditions");
       return;
     }
-
 
     if (password.length < 6) {
       setErrorMessage("Password must be at least 6 characters");
@@ -54,9 +60,20 @@ const Register = () => {
         setErrorMessage("");
         event.target.reset();
         //email verification
-        sendEmailVerification(auth.currentUser)
+        sendEmailVerification(auth.currentUser).then(() => {
+          console.log("verification email send");
+        });
+        //update profile name and photo url
+        const profile = {
+          displayName: name,
+          photoURL: photo
+        }
+        updateProfile(auth.currentUser,profile)
         .then(()=>{
-          console.log("verification email send")
+          console.log("user profile update")
+        })
+        .catch(error => {
+          console.log("user profile update error", error.message)
         })
       })
       .catch((error) => {
@@ -78,6 +95,24 @@ const Register = () => {
     <div className="w-96 mx-auto">
       <h1 className="text-center font-extrabold text-3xl my-5">Sign Up</h1>
       <form onSubmit={handleRegister}>
+        <label className="input input-bordered flex items-center gap-2 my-4">
+          <input
+            type="text"
+            name="name"
+            className="grow"
+            placeholder="Name"
+            required
+          />
+        </label>
+        <label className="input input-bordered flex items-center gap-2 my-4">
+          <input
+            type="text"
+            name="photo"
+            className="grow"
+            placeholder="Photo URL"
+            required
+          />
+        </label>
         <label className="input input-bordered flex items-center gap-2 my-4">
           <input
             type="email"
@@ -105,7 +140,11 @@ const Register = () => {
         </label>
         <div className="form-control">
           <label className="label justify-start gap-2 cursor-pointer">
-            <input type="checkbox" name="terms" className="checkbox checkbox-xs checkbox-success" />
+            <input
+              type="checkbox"
+              name="terms"
+              className="checkbox checkbox-xs checkbox-success"
+            />
             <span className="label-text italic">Accept terms & conditions</span>
           </label>
         </div>
@@ -119,10 +158,19 @@ const Register = () => {
         )}
         {success && (
           <p className="text-center text-green-500">
-            Account created successfully!
+            Account created successfully! <br /> Please check your email for varification.
           </p>
         )}
-        <p className="text-sm">Already have an account? <Link to="/login"> <span className="text-emerald-600  italic font-semibold underline">Login </span> </Link> now. </p>
+        <p className="text-sm">
+          Already have an account?{" "}
+          <Link to="/login">
+            {" "}
+            <span className="text-emerald-600  italic font-semibold underline">
+              Login{" "}
+            </span>{" "}
+          </Link>{" "}
+          now.{" "}
+        </p>
       </div>
     </div>
   );
