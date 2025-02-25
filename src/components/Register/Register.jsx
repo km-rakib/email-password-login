@@ -87,7 +87,7 @@ const Register = () => {
   };
 
   const handleTogglePassword = (e) => {
-    e.preventDefault(); // Prevent form submission
+    e.preventDefault();
     setShowPassword(!showPassword);
   };
 
@@ -131,7 +131,7 @@ const Register = () => {
             required
           />
           <button
-            type="button" // Changed to type="button"
+            type="button"
             onClick={handleTogglePassword}
             className="btn btn-xs rounded-full h-8 border-none bg-white shadow-none w-8 absolute right-2"
           >
